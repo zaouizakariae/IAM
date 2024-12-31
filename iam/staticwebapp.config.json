@@ -19,7 +19,7 @@
           "clientIdSettingName": "AZURE_CLIENT_ID",
           "clientSecretSettingName": "AZURE_CLIENT_SECRET"
         }
-      }
+      } 
     }
   }
   
