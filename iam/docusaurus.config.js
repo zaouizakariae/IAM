@@ -10,8 +10,8 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'University IAM Project',
+  tagline: 'Identity and Access Management System for Universities',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
