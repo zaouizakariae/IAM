@@ -28,7 +28,7 @@ function HomepageHeader() {
   useEffect(() => {
     const token = document.cookie
       .split("; ")
-      .find((row) => row.startsWith("StaticWebAppsAuthCookie"))
+      .find((row) => row.startsWith("StaticWebAppsAuthCookie")) 
       ?.split("=")[1];
 
     if (token) {
