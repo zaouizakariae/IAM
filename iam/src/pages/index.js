@@ -7,6 +7,37 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
+async function fetchUserInfo() {
+  const tokenEndpoint = "https://login.microsoftonline.com/1cd5c8a8-ac3d-4882-ae79-e0dc15e8c552/oauth2/v2.0/token";
+  const graphEndpoint = "https://graph.microsoft.com/v1.0/me";
+
+  // Step 1: Get Access Token
+  const tokenResponse = await fetch(tokenEndpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: "YOUR_CLIENT_ID",
+      client_secret: "YOUR_CLIENT_SECRET",
+      grant_type: "client_credentials", // Or authorization_code
+      scope: "https://graph.microsoft.com/.default", // Scope for Microsoft Graph API
+    }),
+  });
+
+  const { access_token } = await tokenResponse.json();
+
+  // Step 2: Fetch User Info
+  const userResponse = await fetch(graphEndpoint, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
+
+  const userInfo = await userResponse.json();
+  console.log("User Info:", userInfo);
+}
+
+fetchUserInfo();
 
 
 
