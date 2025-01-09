@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -7,70 +8,94 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
+// Group mapping (Group IDs from Azure AD to readable names)
+const groupsMap = {
+  "96a55f06-44bd-42ac-9b13-1b9b44071093": "Administrator",
+  "e21d94c3-d9d5-414b-865b-79989deb4849": "Direction",
+  "49c5b0ba-1da4-4afb-b124-632a4b9f4722": "External Professors",
+  "34828a01-3530-4e24-9586-660d9979c968": "Human Resources",
+  "c09d0aad-1670-4ff9-b6c6-7b8ad949ca9": "Maintenance",
+  "5871d88a-63b5-499f-b4ef-5a730c8d7136": "Professors",
+  "942df11e-7c4e-4344-a75a-7c21c5b568e8": "Scolarité",
+  "88439227-1256-4a2e-b9ce-7ad68208ebc0": "Students",
+};
+
 async function fetchUserInfo() {
-  const tokenEndpoint = "https://login.microsoftonline.com/1cd5c8a8-ac3d-4882-ae79-e0dc15e8c552/oauth2/v2.0/token";
-  const graphEndpoint = "https://graph.microsoft.com/v1.0/me";
-
-  // Step 1: Get Access Token
-  const tokenResponse = await fetch(tokenEndpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      client_id: "YOUR_CLIENT_ID",
-      client_secret: "YOUR_CLIENT_SECRET",
-      grant_type: "client_credentials", // Or authorization_code
-      scope: "https://graph.microsoft.com/.default", // Scope for Microsoft Graph API
-    }),
-  });
-
-  const { access_token } = await tokenResponse.json();
-
-  // Step 2: Fetch User Info
-  const userResponse = await fetch(graphEndpoint, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-    },
-  });
-
-  const userInfo = await userResponse.json();
-  console.log("User Info:", userInfo);
+  try {
+    const response = await fetch('/.auth/me');
+    const data = await response.json();
+    const groupClaims = data?.clientPrincipal?.claims?.filter(claim => claim.typ === 'groups').map(claim => claim.val);
+    return groupClaims || [];
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+    return [];
+  }
 }
 
-fetchUserInfo();
-
-
-
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+function HomepageHeader({ userGroup }) {
+  const { siteConfig } = useDocusaurusContext();
 
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <Heading as="h1" className="hero__title">
-          University
-        </Heading>
+        <Heading as="h1" className="hero__title">University</Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-        <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
-        </Link>
+          {/* Conditionally render buttons based on userGroup */}
+          {userGroup === "Administrator" && (
+            <Link
+              className="button button--secondary button--lg"
+              to="/admin/dashboard"
+            >
+              Admin Dashboard
+            </Link>
+          )}
+          {userGroup === "Direction" && (
+            <Link
+              className="button button--secondary button--lg"
+              to="/direction/tools"
+            >
+              Direction Tools
+            </Link>
+          )}
+          {userGroup === "Students" && (
+            <Link
+              className="button button--secondary button--lg"
+              to="/student/portal"
+            >
+              Student Portal
+            </Link>
+          )}
+          {!userGroup && (
+            <p>You do not have access to specific tools.</p>
+          )}
         </div>
       </div>
     </header>
   );
 }
 
-
 export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
+  const [userGroup, setUserGroup] = useState(null);
+
+  useEffect(() => {
+    const getUserGroup = async () => {
+      const groupClaims = await fetchUserInfo();
+      // Match the user's group ID to your defined groups
+      const matchedGroup = groupClaims.find(groupId => groupsMap[groupId]);
+      setUserGroup(groupsMap[matchedGroup] || null);
+    };
+
+    getUserGroup();
+  }, []);
+
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      <HomepageHeader />
+      description="Description will go into a meta tag in <head />"
+    >
+      <HomepageHeader userGroup={userGroup} />
       <main>
         <HomepageFeatures />
       </main>
