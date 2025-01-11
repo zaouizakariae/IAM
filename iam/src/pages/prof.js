@@ -39,9 +39,10 @@ export default function ProfessorPage() {
       const { resource } = await client
         .database(databaseId)
         .container(containerId)
-        .item(studentId)
+        .item(studentId, studentId)
         .read();
-
+      
+        console.log('Student ID being used for read:', studentId);
       if (!resource) {
         throw new Error('Student record not found.');
       }
@@ -53,7 +54,7 @@ export default function ProfessorPage() {
       await client
         .database(databaseId)
         .container(containerId)
-        .item(studentId)
+        .item(studentId, studentId)
         .replace(resource);
 
       setResult('Note updated successfully!');
