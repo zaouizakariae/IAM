@@ -17,7 +17,7 @@ export default function StudentPage() {
     const fetchStudentData = async () => {
       try {
         // Fetch authenticated user details
-        const userResponse = await fetch('/.auth/me');
+        const userResponse = await fetch('https://ambitious-sea-01b5b2a03.4.azurestaticapps.net/.auth/me');
         const userData = await userResponse.json();
         const studentId = userData.clientPrincipal.userDetails.split('@')[0]; // Use username as ID
 
