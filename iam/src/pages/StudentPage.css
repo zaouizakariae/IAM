@@ -1,14 +1,12 @@
-body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #a8e063, #56ab2f);
-    height: 100vh;
+
+.center-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;    /* Vertical centering */
+    height: 100vh;          /* Full viewport height */
+    background: linear-gradient(135deg, #a8e063, #56ab2f);
   }
   
-  .professor-page,
   .student-page {
     font-family: 'Arial', sans-serif;
     width: 100%;

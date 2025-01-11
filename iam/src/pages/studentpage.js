@@ -50,6 +50,7 @@ export default function StudentPage() {
   };
 
   return (
+    <div className="center-container">
     <div className="student-page">
       <header className="header">
         <h1>Student Portal</h1>
@@ -66,6 +67,7 @@ export default function StudentPage() {
           </p>
         )}
       </div>
+    </div>
     </div>
   );
 }

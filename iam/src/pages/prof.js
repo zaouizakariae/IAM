@@ -68,6 +68,7 @@ export default function ProfessorPage() {
   };
 
   return (
+    <div className="center-container">
     <div className="professor-page">
       <header className="header">
         <h1>Professor Portal</h1>
@@ -107,6 +108,7 @@ export default function ProfessorPage() {
         <h2>Result:</h2>
         <p>{result}</p>
       </div>
+    </div>
     </div>
   );
 }
