@@ -61,7 +61,7 @@ function HomepageHeader({ userGroup }) {
           {userGroup === "Students" && (
             <Link
               className="button button--secondary button--lg"
-              to="/student/portal"
+              to="/studentpage"
             >
               Student Portal
             </Link>
