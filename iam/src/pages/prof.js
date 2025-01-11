@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CosmosClient } from '@azure/cosmos';
+import './ProfessorPage.css'; // Importing CSS for styling
 
 // Cosmos DB configuration
 const client = new CosmosClient({
@@ -41,8 +42,7 @@ export default function ProfessorPage() {
         .container(containerId)
         .item(studentId, studentId)
         .read();
-      
-        console.log('Student ID being used for read:', studentId);
+
       if (!resource) {
         throw new Error('Student record not found.');
       }
@@ -64,32 +64,48 @@ export default function ProfessorPage() {
     }
   };
 
+  const goToHomePage = () => {
+    // Redirect to the home page
+    window.location.href = 'https://ambitious-sea-01b5b2a03.4.azurestaticapps.net/';
+  };
+
   return (
-    <div>
-      <h1>Professor Portal</h1>
-      <div>
-        <label>
-          Student ID:
+    <div className="professor-page">
+      <header className="header">
+        <h1>Professor Portal</h1>
+        <button className="back-button" onClick={goToHomePage}>
+          Go Back
+        </button>
+      </header>
+      <div className="form-container">
+        <div className="input-group">
+          <label htmlFor="studentId">Student ID:</label>
           <input
+            id="studentId"
             type="text"
+            placeholder="Enter student ID"
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
           />
-        </label>
-        <button onClick={fetchStudentNotes}>Fetch Notes</button>
-      </div>
-      <div>
-        <label>
-          New Note:
+          <button className="primary-button" onClick={fetchStudentNotes}>
+            Fetch Notes
+          </button>
+        </div>
+        <div className="input-group">
+          <label htmlFor="note">New Note:</label>s
           <input
+            id="note"
             type="number"
+            placeholder="Enter new note"
             value={note}
             onChange={(e) => setNote(e.target.value)}
           />
-        </label>
-        <button onClick={updateStudentNotes}>Update Notes</button>
+          <button className="primary-button" onClick={updateStudentNotes}>
+            Update Notes
+          </button>
+        </div>
       </div>
-      <div>
+      <div className="result-container">
         <h2>Result:</h2>
         <p>{result}</p>
       </div>
