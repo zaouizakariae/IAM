@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { CosmosClient } from '@azure/cosmos';
-import './ProfessorPage.css'; // Importing CSS for styling
+import './ProfessorPage.css'; // Updated CSS file for new styling
 
-// Cosmos DB configuration
 const client = new CosmosClient({
   endpoint: 'https://iam-cosmosdb.documents.azure.com:443/',
   key: 'RxCpgRdhVGKt518oUIvItz7UeksISrHmaYnfKDbs7QEwk1vm0dUh1g9RIeXM5N5t38hqR6PdPZQxACDbkOJjlA==',
@@ -65,7 +64,6 @@ export default function ProfessorPage() {
   };
 
   const goToHomePage = () => {
-    // Redirect to the home page
     window.location.href = 'https://ambitious-sea-01b5b2a03.4.azurestaticapps.net/';
   };
 
@@ -92,7 +90,7 @@ export default function ProfessorPage() {
           </button>
         </div>
         <div className="input-group">
-          <label htmlFor="note">New Note:</label>s
+          <label htmlFor="note">New Note:</label>
           <input
             id="note"
             type="number"
