@@ -8,7 +8,8 @@ body {
   justify-content: center;
 }
 
-.professor-page {
+.professor-page,
+.student-page {
   font-family: 'Arial', sans-serif;
   width: 100%;
   max-width: 400px;
@@ -16,6 +17,7 @@ body {
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .header {
@@ -40,22 +42,25 @@ body {
   cursor: pointer;
   font-size: 14px;
   transition: background 0.3s;
-  margin-left: 10px;
 }
 
 .back-button:hover {
   background: #ff4c4c;
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.form-container,
+.note-container {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f1f1f1;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .input-group label {
@@ -93,7 +98,6 @@ body {
   background: #f1f1f1;
   border: 1px solid #ddd;
   border-radius: 5px;
-  text-align: center;
 }
 
 .result-container h2 {

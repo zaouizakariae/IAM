@@ -8,6 +8,7 @@ body {
     justify-content: center;
   }
   
+  .professor-page,
   .student-page {
     font-family: 'Arial', sans-serif;
     width: 100%;
@@ -41,13 +42,13 @@ body {
     cursor: pointer;
     font-size: 14px;
     transition: background 0.3s;
-    margin-left: 10px;
   }
   
   .back-button:hover {
     background: #ff4c4c;
   }
   
+  .form-container,
   .note-container {
     margin-top: 20px;
     padding: 15px;
@@ -56,13 +57,55 @@ body {
     border-radius: 5px;
   }
   
-  .note {
-    font-size: 18px;
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .input-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .input-group input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .primary-button {
+    margin-top: 10px;
+    background: #006400;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+  }
+  
+  .primary-button:hover {
+    background: #004d00;
+  }
+  
+  .result-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .result-container h2 {
+    margin: 0 0 10px 0;
     color: #333;
   }
   
-  .error {
-    color: red;
-    font-size: 16px;
+  .result-container p {
+    color: #555;
   }
   
