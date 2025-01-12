@@ -107,3 +107,38 @@
     color: #555;
   }
   
+  .unauthorized {
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .unauthorized h1 {
+    font-size: 24px;
+    color: #d9534f;
+  }
+  
+  .unauthorized p {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .back-button {
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .back-button:hover {
+    background-color: #4cae4c;
+  }
+  

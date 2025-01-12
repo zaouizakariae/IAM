@@ -13,6 +13,7 @@ const containerId = 'IAMNotes';
 export default function StudentPage() {
   const [note, setNote] = useState(null);
   const [error, setError] = useState(null);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
     const fetchStudentData = async () => {
@@ -22,7 +23,22 @@ export default function StudentPage() {
           'https://ambitious-sea-01b5b2a03.4.azurestaticapps.net/.auth/me'
         );
         const userData = await userResponse.json();
-        const studentId = userData.clientPrincipal.userDetails.split('@')[0]; // Use username as ID
+
+        // Verify if the role is 'Student'
+        const roleClaim = userData.clientPrincipal.claims.find(
+          (claim) => claim.typ === 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        );
+        const role = roleClaim ? roleClaim.val : null;
+
+        if (role !== 'Student') {
+          setIsAuthorized(false);
+          return;
+        }
+
+        setIsAuthorized(true);
+
+        // Get the student's ID
+        const studentId = userData.clientPrincipal.userDetails.split('@')[0];
 
         // Query Cosmos DB
         const { resources } = await client
@@ -49,25 +65,39 @@ export default function StudentPage() {
     window.location.href = 'https://ambitious-sea-01b5b2a03.4.azurestaticapps.net/';
   };
 
+  if (!isAuthorized) {
+    return (
+      <div className="center-container">
+        <div className="unauthorized">
+          <h1>Access Denied</h1>
+          <p>You do not have permission to access this page.</p>
+          <button className="back-button" onClick={goToHomePage}>
+            Go Back to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="center-container">
-    <div className="student-page">
-      <header className="header">
-        <h1>Student Portal</h1>
-        <button className="back-button" onClick={goToHomePage}>
-          Go Back
-        </button>
-      </header>
-      <div className="note-container">
-        {error ? (
-          <p className="error">{error}</p>
-        ) : (
-          <p className="note">
-            Your Note: {note !== null ? `${note}/20` : 'Loading...'}
-          </p>
-        )}
+      <div className="student-page">
+        <header className="header">
+          <h1>Student Portal</h1>
+          <button className="back-button" onClick={goToHomePage}>
+            Go Back
+          </button>
+        </header>
+        <div className="note-container">
+          {error ? (
+            <p className="error">{error}</p>
+          ) : (
+            <p className="note">
+              Your Note: {note !== null ? `${note}/20` : 'Loading...'}
+            </p>
+          )}
+        </div>
       </div>
-    </div>
     </div>
   );
 }
