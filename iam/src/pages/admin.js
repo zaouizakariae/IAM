@@ -15,7 +15,9 @@ export default function AdminPage() {
     if (!accessToken || Date.now() >= tokenExpiry) {
       const response = await fetch('https://cors-anywhere.herokuapp.com/https://login.microsoftonline.com/1cd5c8a8-ac3d-4882-ae79-e0dc15e8c552/oauth2/v2.0/token', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded',
+          Origin: 'https://ambitious-sea-01b5b2a03.4.azurestaticapps.net'
+         },
         body: new URLSearchParams({
           client_id: '9f1c28ea-b8d5-41d5-aed7-87db4ccc8c6f',
           client_secret: 'etG8Q~EPj9LSkZPPRzvdVqx5q6oXj9InNtPutbcC',
