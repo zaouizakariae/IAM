@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './AdminPage.css'; // Custom CSS for styling
 
 const GRAPH_API_ENDPOINT = 'https://graph.microsoft.com/v1.0/users';
-const ACCESS_TOKEN = 'eyJ0eXAiOiJKV1QiLCJub25jZSI6IkltdW9nVDJjRmlaS2ZGYTlfeGhvQldtOXpEQ1hnSno5N29GWnB1VUlIUWciLCJhbGciOiJSUzI1NiIsIng1dCI6InoxcnNZSEhKOS04bWdndDRIc1p1OEJLa0JQdyIsImtpZCI6InoxcnNZSEhKOS04bWdndDRIc1p1OEJLa0JQdyJ9.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xY2Q1YzhhOC1hYzNkLTQ4ODItYWU3OS1lMGRjMTVlOGM1NTIvIiwiaWF0IjoxNzM2NzAwNTYxLCJuYmYiOjE3MzY3MDA1NjEsImV4cCI6MTczNjcwNDQ2MSwiYWlvIjoiazJCZ1lIQTZjWkRqNExlbEhkbDFOM1F1R1M1dkJnQT0iLCJhcHBfZGlzcGxheW5hbWUiOiJJQU0iLCJhcHBpZCI6IjlmMWMyOGVhLWI4ZDUtNDFkNS1hZWQ3LTg3ZGI0Y2NjOGM2ZiIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFjZDVjOGE4LWFjM2QtNDg4Mi1hZTc5LWUwZGMxNWU4YzU1Mi8iLCJpZHR5cCI6ImFwcCIsIm9pZCI6IjM3NjliZTMxLTdmMjEtNDhmMy05NWViLTFlYzIwMmU5NTk5ZSIsInJoIjoiMS5BVXNBcU1qVkhEMnNna2l1ZWVEY0ZlakZVZ01BQUFBQUFBQUF3QUFBQUFBQUFBQkdBUUJMQUEuIiwicm9sZXMiOlsiR3JvdXAuUmVhZC5BbGwiLCJVc2VyLlJlYWQuQWxsIiwiR3JvdXBNZW1iZXIuUmVhZC5BbGwiXSwic3ViIjoiMzc2OWJlMzEtN2YyMS00OGYzLTk1ZWItMWVjMjAyZTk1OTllIiwidGVuYW50X3JlZ2lvbl9zY29wZSI6IkVVIiwidGlkIjoiMWNkNWM4YTgtYWMzZC00ODgyLWFlNzktZTBkYzE1ZThjNTUyIiwidXRpIjoiX2gtSTJPWjF4a3kyU290MXBkVzhBQSIsInZlciI6IjEuMCIsIndpZHMiOlsiMDk5N2ExZDAtMGQxZC00YWNiLWI0MDgtZDVjYTczMTIxZTkwIl0sInhtc19pZHJlbCI6IjcgNCIsInhtc190Y2R0IjoxNzMyNzExOTI1LCJ4bXNfdGRiciI6IkVVIn0.Aoe4AMVLoTIGupfdZ3bkIkcrSX297iFwtEijnwp_XieiH0avjNRkn6DqsBiH6QH9tES6CVwG8JZceG5cU4zHOnOfo85ZxZ-i1dvYpcLXmhNngB9qVVoIxgfGujZfIpCVoqGdGp3tK5Gl4stsvEfxI9etk9eBUHCntPlqeRgqJ-gW3cxnQ4idwDG3Q6IUcIw-46u4-nlgZO-LQOSvnMvBUhGsUeoYHBCva8F0taRPTJLLuNvuNWZBh6azMxybnCi_Bon-StWcRyxkPa7uLPFAScwrHnaeujrsbk_N31fNA_i9x_mpVrLVPloEaZKqILwRrh_Q76IYuSS9x6C-DHROvQ';
 
 
 export default function AdminPage() {
@@ -11,7 +10,30 @@ export default function AdminPage() {
   const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
+    let accessToken = null;
+let tokenExpiry = null;
+
+const getAccessToken = async () => {
+  if (!accessToken || Date.now() >= tokenExpiry) {
+    const tokenResponse = await fetch('https://login.microsoftonline.com/1cd5c8a8-ac3d-4882-ae79-e0dc15e8c552/oauth2/v2.0/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: '9f1c28ea-b8d5-41d5-aed7-87db4ccc8c6f',
+        client_secret: 'etG8Q~EPj9LSkZPPRzvdVqx5q6oXj9InNtPutbcC',
+        scope: 'https://graph.microsoft.com/.default',
+        grant_type: 'client_credentials',
+      }),
+    });
+
+    const tokenData = await tokenResponse.json();
+    accessToken = tokenData.access_token;
+    tokenExpiry = Date.now() + tokenData.expires_in * 1000; // Set expiry time
+  }
+  return accessToken;
+};
     const fetchAdminData = async () => {
+      const token = await getAccessToken();
       try {
         const userResponse = await fetch(
           'https://ambitious-sea-01b5b2a03.4.azurestaticapps.net/.auth/me'
@@ -33,7 +55,7 @@ export default function AdminPage() {
         const graphResponse = await fetch(GRAPH_API_ENDPOINT, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -53,11 +75,12 @@ export default function AdminPage() {
   }, []);
 
   const handleDeleteUser = async (userId) => {
+    const token = await getAccessToken();
     try {
       const deleteResponse = await fetch(`${GRAPH_API_ENDPOINT}/${userId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       });
   
@@ -80,6 +103,7 @@ export default function AdminPage() {
   const handleAddUser = async () => {
     const userPrincipalName = prompt('Enter the email for the new user:');
     const displayName = prompt('Enter the display name for the new user:');
+    const token = await getAccessToken();
 
     if (!userPrincipalName || !displayName) {
       alert('Both email and display name are required.');
@@ -90,7 +114,7 @@ export default function AdminPage() {
       const addResponse = await fetch(GRAPH_API_ENDPOINT, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
