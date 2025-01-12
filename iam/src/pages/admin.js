@@ -24,6 +24,7 @@ export default function AdminPage() {
             scope: 'https://graph.microsoft.com/.default',
             grant_type: 'client_credentials',
           }),
+          mode: 'no-cors',
         }
       );
       const data = await response.json();
