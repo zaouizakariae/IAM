@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './AdminPage.css'; // Custom CSS for styling
 
 const GRAPH_API_ENDPOINT = 'https://graph.microsoft.com/v1.0/users';
-
+const ACCESS_TOKEN = 'eyJ0eXAiOiJKV1QiLCJub25jZSI6IndyQVZIVUhrLTBoTzhmN0NERUJLSXNoSWVvT0ctYTlwTTZ0VTEwakdQSlUiLCJhbGciOiJSUzI1NiIsIng1dCI6InoxcnNZSEhKOS04bWdndDRIc1p1OEJLa0JQdyIsImtpZCI6InoxcnNZSEhKOS04bWdndDRIc1p1OEJLa0JQdyJ9.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xY2Q1YzhhOC1hYzNkLTQ4ODItYWU3OS1lMGRjMTVlOGM1NTIvIiwiaWF0IjoxNzM2Njk2MDAwLCJuYmYiOjE3MzY2OTYwMDAsImV4cCI6MTczNjY5OTkwMCwiYWlvIjoiazJCZ1lOaDhiMkhEaEY5bis5VVNNcGxmTXpuZkFRQT0iLCJhcHBfZGlzcGxheW5hbWUiOiJJQU0iLCJhcHBpZCI6IjlmMWMyOGVhLWI4ZDUtNDFkNS1hZWQ3LTg3ZGI0Y2NjOGM2ZiIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFjZDVjOGE4LWFjM2QtNDg4Mi1hZTc5LWUwZGMxNWU4YzU1Mi8iLCJpZHR5cCI6ImFwcCIsIm9pZCI6IjM3NjliZTMxLTdmMjEtNDhmMy05NWViLTFlYzIwMmU5NTk5ZSIsInJoIjoiMS5BVXNBcU1qVkhEMnNna2l1ZWVEY0ZlakZVZ01BQUFBQUFBQUF3QUFBQUFBQUFBQkdBUUJMQUEuIiwicm9sZXMiOlsiR3JvdXAuUmVhZC5BbGwiLCJVc2VyLlJlYWQuQWxsIiwiR3JvdXBNZW1iZXIuUmVhZC5BbGwiXSwic3ViIjoiMzc2OWJlMzEtN2YyMS00OGYzLTk1ZWItMWVjMjAyZTk1OTllIiwidGVuYW50X3JlZ2lvbl9zY29wZSI6IkVVIiwidGlkIjoiMWNkNWM4YTgtYWMzZC00ODgyLWFlNzktZTBkYzE1ZThjNTUyIiwidXRpIjoicDg5QjNtOVBFVVdPVnFOTHlEeThBQSIsInZlciI6IjEuMCIsIndpZHMiOlsiMDk5N2ExZDAtMGQxZC00YWNiLWI0MDgtZDVjYTczMTIxZTkwIl0sInhtc19pZHJlbCI6IjcgMTIiLCJ4bXNfdGNkdCI6MTczMjcxMTkyNSwieG1zX3RkYnIiOiJFVSJ9.GSwV4WrN3IwyJRd-9u6zhZLNfwBxvM1vFMchRvjJ9_pXzn6ovqxgdLCNLbjafgiNPZIPvJje9B6Sc894VW5iM3dbjGM-XiQPmQfFeYQMte6BscbeQkWF47ZTTwKfq60EIWobBMCdn5l0kW2piA6Hw7af7LIH7VXJPAEsgQmI5iRwaT2BGc3JXTJpMcJSvbfVGYUClriF5vZaf0JwhUudsOrppX4YUu14XrX-DSOrcMorTZ1tpDrZVhN6-bw84ZpuDl7HFqy2pT1ImsPdwNNjsYSd5Wr0T2pjf4YuLO55i_r2vIHsN9SGqN3knGFvpJln8tX62ywvIfoA2PQbZEvhxg';
 export default function AdminPage() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -34,7 +34,7 @@ export default function AdminPage() {
         const graphResponse = await fetch(GRAPH_API_ENDPOINT, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_GRAPH_API_TOKEN}`,
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
         });
 
