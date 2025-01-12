@@ -18,7 +18,7 @@ export default function AdminPage() {
       const userData = await userResponse.json();
 
       const roleClaim = userData.clientPrincipal.claims.find(
-        (claim) => claim.typ === 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        (claim) => claim.typ === 'roles'
       );
       const role = roleClaim ? roleClaim.val : null;
       console.log('Role:', role);
