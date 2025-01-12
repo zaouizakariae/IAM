@@ -63,4 +63,33 @@
     color: red;
     text-align: center;
   }
+  .scrollable {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 10px;
+  }
   
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .add-button,
+  .delete-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+  }
+  
+  .add-button:hover,
+  .delete-button:hover {
+    opacity: 0.8;
+  }
