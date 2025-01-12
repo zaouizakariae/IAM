@@ -60,18 +60,22 @@ export default function AdminPage() {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       });
-
-      if (deleteResponse.ok) {
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-        alert('User deleted successfully!');
-      } else {
-        throw new Error('Failed to delete user');
+  
+      if (!deleteResponse.ok) {
+        const errorData = await deleteResponse.json();
+        console.error('Error deleting user:', errorData);
+        alert(`Failed to delete user: ${errorData.error.message}`);
+        return;
       }
+  
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      alert('User deleted successfully!');
     } catch (err) {
       console.error('Error deleting user:', err);
       alert('Failed to delete user.');
     }
   };
+  
 
   const handleAddUser = async () => {
     const userPrincipalName = prompt('Enter the email for the new user:');
