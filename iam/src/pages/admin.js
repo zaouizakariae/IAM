@@ -24,9 +24,9 @@ export default function AdminPage() {
             scope: 'https://graph.microsoft.com/.default',
             grant_type: 'client_credentials',
           }),
-          mode: 'no-cors',
         }
       );
+
       const data = await response.json();
       accessToken = data.access_token;
       tokenExpiry = Date.now() + data.expires_in * 1000;
@@ -47,11 +47,11 @@ export default function AdminPage() {
       );
       const role = roleClaim ? roleClaim.val : null;
       console.log('Role:', role);
+
       if (role !== 'Admin') {
         setIsAuthorized(false);
         return;
       }
-      
 
       setIsAuthorized(true);
 
@@ -69,71 +69,6 @@ export default function AdminPage() {
     } catch (err) {
       console.error('Error fetching admin data:', err);
       setError('Failed to fetch data.');
-    }
-  };
-
-  const handleDeleteUser = async (userId) => {
-    const token = await getAccessToken();
-    try {
-      const response = await fetch(`${GRAPH_API_ENDPOINT}/${userId}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error deleting user:', errorData);
-        alert(`Failed to delete user: ${errorData.error.message}`);
-        return;
-      }
-
-      setUsers((prev) => prev.filter((user) => user.id !== userId));
-      alert('User deleted successfully!');
-    } catch (err) {
-      console.error('Error deleting user:', err);
-      alert('Failed to delete user.');
-    }
-  };
-
-  const handleAddUser = async () => {
-    const email = prompt('Enter the email for the new user:');
-    const displayName = prompt('Enter the display name for the new user:');
-    const token = await getAccessToken();
-
-    if (!email || !displayName) {
-      alert('Both email and display name are required.');
-      return;
-    }
-
-    try {
-      const response = await fetch(GRAPH_API_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          accountEnabled: true,
-          displayName,
-          mailNickname: displayName.split(' ').join('').toLowerCase(),
-          userPrincipalName: email,
-          passwordProfile: {
-            forceChangePasswordNextSignIn: true,
-            password: 'TemporaryPassword123!',
-          },
-        }),
-      });
-
-      if (response.ok) {
-        const newUser = await response.json();
-        setUsers((prev) => [...prev, newUser]);
-        alert('User added successfully!');
-      } else {
-        throw new Error('Failed to add user');
-      }
-    } catch (err) {
-      console.error('Error adding user:', err);
-      alert('Failed to add user.');
     }
   };
 
@@ -164,14 +99,9 @@ export default function AdminPage() {
       <div className="admin-page">
         <header className="header">
           <h1>Admin Portal</h1>
-          <div className="action-buttons">
-            <button className="back-button" onClick={goToHomePage}>
-              Go Back
-            </button>
-            <button className="add-button" onClick={handleAddUser}>
-              Add User
-            </button>
-          </div>
+          <button className="back-button" onClick={goToHomePage}>
+            Go Back
+          </button>
         </header>
         <div className="user-list scrollable">
           {error ? (
@@ -183,7 +113,6 @@ export default function AdminPage() {
                   <th>User ID</th>
                   <th>Display Name</th>
                   <th>Email</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -192,14 +121,6 @@ export default function AdminPage() {
                     <td>{user.id}</td>
                     <td>{user.displayName}</td>
                     <td>{user.userPrincipalName}</td>
-                    <td>
-                      <button
-                        className="delete-button"
-                        onClick={() => handleDeleteUser(user.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
                   </tr>
                 ))}
               </tbody>
