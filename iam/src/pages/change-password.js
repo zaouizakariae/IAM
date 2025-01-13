@@ -1,6 +1,6 @@
 // ChangePassword.js
 import React, { useState } from "react";
-import msalInstance from "./msalConfig"; // Import the shared MSAL instance
+const { loginAndGetToken } = require("./msalConfig"); // Import from msalConfig.js
 import "./ChangePassword.css"; // CSS for styling
 
 export default function ChangePassword() {
@@ -8,18 +8,6 @@ export default function ChangePassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-
-  const loginAndGetToken = async () => {
-    try {
-      const loginResponse = await msalInstance.loginPopup({
-        scopes: ["User.ReadWrite"], // Request delegated permissions
-      });
-      return loginResponse.accessToken;
-    } catch (error) {
-      console.error("Error logging in:", error);
-      throw error;
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +18,7 @@ export default function ChangePassword() {
     }
 
     try {
+      // Use the imported `loginAndGetToken` function to get the token
       const token = await loginAndGetToken();
 
       const response = await fetch(
