@@ -26,7 +26,8 @@ const sidebars = {
     {
       type: 'category',
       label: 'context',
-      items: ['tutorial-basics/create-a-document'],
+      
+      
     },
   ],
    */

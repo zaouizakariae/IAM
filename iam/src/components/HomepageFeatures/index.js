@@ -22,7 +22,7 @@ const FeatureList = [
     ),
   },
   {
-    title: 'Admin Dashboard',
+    title: 'Admin Dashoard',
     Svg: require('@site/static/img/a.svg').default,
     description: (
       <>
