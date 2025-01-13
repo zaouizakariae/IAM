@@ -1,7 +1,33 @@
+// Import necessary libraries
 import React, { useState } from "react";
-import "./ChangePassword.css"; // Import CSS for styling
-import { loginAndGetToken } from "./msalConfig.js"; // Import MSAL configuration
+import { PublicClientApplication } from "@azure/msal-browser";
+import "./ChangePassword.css"; // Import CSS for styling the red theme
 
+// MSAL Configuration
+const msalConfig = {
+  auth: {
+    clientId: "9f1c28ea-b8d5-41d5-aed7-87db4ccc8c6f", // Replace with your Azure AD app's client ID
+    authority: "https://login.microsoftonline.com/1cd5c8a8-ac3d-4882-ae79-e0dc15e8c552", // Replace with your Azure AD tenant ID
+    redirectUri: "https://ambitious-sea-01b5b2a03.4.azurestaticapps.net/", // Replace with your app's redirect URI
+  },
+};
+
+const msalInstance = new PublicClientApplication(msalConfig);
+
+// Function to log in and get a token
+const loginAndGetToken = async () => {
+  try {
+    const loginResponse = await msalInstance.loginPopup({
+      scopes: ["User.ReadWrite"], // Request delegated permissions
+    });
+    return loginResponse.accessToken;
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw error;
+  }
+};
+
+// ChangePassword Component
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
