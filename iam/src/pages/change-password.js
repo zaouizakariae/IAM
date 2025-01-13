@@ -1,29 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { PublicClientApplication } from "@azure/msal-browser";
-import "./ChangePassword.css"; // Custom CSS for styling the red theme
+// ChangePassword.js
+import React, { useState } from "react";
+import msalInstance from "./msalConfig"; // Import the shared MSAL instance
+import "./ChangePassword.css"; // CSS for styling
 
-// MSAL Configuration
-const msalConfig = {
-  auth: {
-    clientId: "9f1c28ea-b8d5-41d5-aed7-87db4ccc8c6f", // Replace with your Azure AD app's client ID
-    authority: "https://login.microsoftonline.com/1cd5c8a8-ac3d-4882-ae79-e0dc15e8c552", // Replace with your Azure AD tenant ID
-    redirectUri: "https://ambitious-sea-01b5b2a03.4.azurestaticapps.net/", // Replace with your app's redirect URI
-  },
-};
-
-const msalInstance = new PublicClientApplication(msalConfig);
-
-// ChangePassword Component
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-
-  // Ensure MSAL instance is initialized
-  useEffect(() => {
-    msalInstance.initialize(); // Initializes the instance
-  }, []);
 
   const loginAndGetToken = async () => {
     try {
@@ -46,10 +30,8 @@ export default function ChangePassword() {
     }
 
     try {
-      // Get user token
       const token = await loginAndGetToken();
 
-      // Call the /me/changePassword endpoint
       const response = await fetch(
         "https://graph.microsoft.com/v1.0/me/changePassword",
         {
