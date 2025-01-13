@@ -9,29 +9,9 @@
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
     const [isAuthorized, setIsAuthorized] = useState(false);
-    const [logs, setLogs] = useState([]);
-    const [viewMode, setViewMode] = useState('users');
 
-    const fetchSignInLogs = async () => {
-      try {
-        const response = await fetch(GRAPH_API_SIGNIN_LOGS_ENDPOINT, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${MANUAL_ACCESS_TOKEN}`,
-          },
-        });
-  
-        if (!response.ok) {
-          throw new Error('Failed to fetch sign-in logs');
-        }
-  
-        const data = await response.json();
-        setLogs(data.value);
-      } catch (err) {
-        console.error('Error fetching logs:', err);
-        setError('Failed to fetch logs.');
-      }
-    };
+
+    
     const fetchAdminData = async () => {
       try {
         // Fetch the current user's authentication and role
@@ -144,13 +124,7 @@
       fetchAdminData();
     }, []);
 
-    const handleViewModeChange = (mode) => {
-      setViewMode(mode);
-  
-      if (mode === 'logs') {
-        fetchSignInLogs();
-      }
-    };
+    
 
     if (!isAuthorized) {
       return (
@@ -165,80 +139,54 @@
         </div>
       );
     }
-  
+
     return (
       <div className="center-container">
         <div className="admin-page">
           <header className="header">
             <h1>Admin Portal</h1>
             <div className="action-buttons">
-              <button onClick={() => handleViewModeChange('users')}>Manage Users</button>
-              <button onClick={() => handleViewModeChange('logs')}>View Logs</button>
+              <button className="back-button" onClick={goToHomePage}>
+                Go Back
+              </button>
+              <button className="add-button" onClick={handleAddUser}>
+                Add User
+              </button>
             </div>
           </header>
-          {viewMode === 'users' && (
-            <div className="user-list scrollable">
-              {error ? (
-                <p className="error">{error}</p>
-              ) : (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>User ID</th>
-                      <th>Display Name</th>
-                      <th>Email</th>
-                      <th>Actions</th>
+          <div className="user-list scrollable">
+            {error ? (
+              <p className="error">{error}</p>
+            ) : (
+              <table>
+                <thead>
+                  <tr>
+                    <th>User ID</th>
+                    <th>Display Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.id}</td>
+                      <td>{user.displayName}</td>
+                      <td>{user.userPrincipalName}</td>
+                      <td>
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDeleteUser(user.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {users.map((user) => (
-                      <tr key={user.id}>
-                        <td>{user.id}</td>
-                        <td>{user.displayName}</td>
-                        <td>{user.userPrincipalName}</td>
-                        <td>
-                          <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          )}
-          {viewMode === 'logs' && (
-            <div className="log-list scrollable">
-              <h2>Sign-In Logs</h2>
-              {error ? (
-                <p className="error">{error}</p>
-              ) : (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>User</th>
-                      <th>Status</th>
-                      <th>IP Address</th>
-                      <th>Location</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {logs.map((log) => (
-                      <tr key={log.id}>
-                        <td>{new Date(log.createdDateTime).toLocaleString()}</td>
-                        <td>{log.userPrincipalName}</td>
-                        <td>{log.status.errorCode === 0 ? 'Success' : 'Failure'}</td>
-                        <td>{log.ipAddress}</td>
-                        <td>
-                          {log.location?.city || 'N/A'}, {log.location?.countryOrRegion || 'N/A'}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          )}
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         </div>
       </div>
     );

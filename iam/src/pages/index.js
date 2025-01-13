@@ -45,9 +45,17 @@ function HomepageHeader({ userGroup }) {
           {userGroup === "Administrator" && (
             <Link
               className="button button--secondary button--lg"
-              to="/admin/dashboard"
+              to="/admin"
             >
               Admin Dashboard
+            </Link>
+          )}
+          {userGroup === "Professor" && (
+            <Link
+              className="button button--secondary button--lg"
+              to="/prof"
+            >
+              Direction Tools
             </Link>
           )}
           {userGroup === "Direction" && (

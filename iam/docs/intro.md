@@ -1,47 +1,141 @@
+# Projet : Découverte des principes de l’IAM
+
+## Membres du projet
+- AZAHAF Mohammed Reda
+- LAKHMIRI Mohammed Elias
+- MIENE Priscille
+- NOISIER Alexandra
+- ZAOUI Zakariae
+
 ---
-sidebar_position: 1
+
+## Contexte détaillé
+
+### L'entreprise
+Notre entreprise est une université.
+
+### Profils et rôles identifiés
+1. **Administrateurs (DSI)** : Gestion de l’infrastructure IT, des accès et des droits globaux.
+2. **Ressources Humaines (RH)** : Gestion des données personnelles du personnel administratif et des enseignants.
+3. **Direction** : Supervision globale, accès aux données stratégiques et aux rapports de performance.
+4. **Maintenance** : Accès limité aux ressources techniques pour la gestion des systèmes physiques et numériques.
+5. **Scolarité** : Gestion des données des étudiants (inscription, dossiers académiques, etc.).
+6. **Étudiants** : Accès aux plateformes pédagogiques, aux résultats et aux ressources numériques.
+7. **Professeurs** :
+   - **Enseignants-chercheurs** : Accès aux outils pédagogiques, publications et ressources administratives.
+   - **Externes** : Accès limité aux outils pédagogiques et à des ressources spécifiques selon leur mission.
+   - **Visiteurs** : Accès restreint et temporaire.
+
+### Données communes des utilisateurs
+- Nom, prénom
+- Date de naissance
+- Adresse
+- Adresse électronique
+- Identifiant unique
+- Mot de passe personnalisé
+
 ---
 
-# Tutorial Intro
+## Clarification des rôles et des permissions
 
-Let's discover **Docusaurus in less than 5 minutes**.
+### Rôles et leurs permissions
 
-## Getting Started
+1. **Administrateurs (DSI)**
+   - Créer, lire, mettre à jour et supprimer des utilisateurs.
+   - Gérer les rôles et permissions.
+   - Configurer et surveiller l’infrastructure IT.
 
-Get started by **creating a new site**.
+2. **Ressources Humaines (RH)**
+   - Lire et mettre à jour les données personnelles.
+   - Générer des rapports RH.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+3. **Direction**
+   - Accéder aux données stratégiques et aux rapports.
+   - Superviser les opérations globales.
 
-### What you'll need
+4. **Maintenance**
+   - Gérer les systèmes physiques et numériques.
+   - Exécuter des scripts de maintenance.
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+5. **Scolarité**
+   - Gérer les inscriptions des étudiants.
+   - Accéder et mettre à jour les dossiers académiques.
 
-## Generate a new site
+6. **Étudiants**
+   - Accéder aux plateformes pédagogiques.
+   - Consulter les résultats et utiliser les ressources numériques.
 
-Generate a new Docusaurus site using the **classic template**.
+7. **Professeurs (Enseignants-chercheurs)**
+   - Accéder aux outils pédagogiques.
+   - Publier des publications.
+   - Gérer des ressources administratives.
 
-The classic template will automatically be added to your project after you run the command:
+8. **Externes**
+   - Accès limité aux outils pédagogiques et ressources spécifiques.
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+9. **Visiteurs**
+   - Accès temporaire et restreint.
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+### Corrélations entre les rôles
+- **Administrateurs (DSI)** : supervisent les droits d’accès de tous les autres rôles.
+- **RH et Direction** : partagent des données pour le suivi des salariés.
+- **Professeurs et Étudiants** : collaborent sur les plateformes pédagogiques.
+- **Visiteurs** : permissions isolées et interactions limitées.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+---
 
-## Start your site
+## Définition des besoins
 
-Run the development server:
+### Gestion des utilisateurs
+- **Enregistrement** : Création de compte avec collecte des données personnelles minimum.
+- **Authentification** : Connexion via identifiant unique et mot de passe.
+- **Réinitialisation de mot de passe** : Vérification d’identité requise.
+- **Cycle de vie** : Création, mise à jour, désactivation et suppression des comptes.
 
-```bash
-cd my-website
-npm run start
-```
+### Gestion des rôles et permissions
+- **Création de rôles** : Définition de permissions spécifiques.
+- **Gestion dynamique** : Modifier les rôles et permissions des utilisateurs.
+- **Attribution automatique** : Automatisation selon des critères prédéfinis (département, groupe, etc.).
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+---
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+## Points à approfondir
+- Schéma d’architecture du système IAM (composants et flux de données).
+- Plan de sécurité :
+  - Gestion des accès : principe du moindre privilège.
+  - Protection des données : chiffrement des données en transit et au repos.
+  - Conformité aux réglementations en vigueur.
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+---
+
+## Authentification et autorisation
+
+### Mécanismes d'authentification
+Décrire les mécanismes possibles.
+
+### Modèle d’autorisation
+- RBAC : Role-Based Access Control.
+- ABAC : Attribute-Based Access Control.
+
+### Gestion des utilisateurs et des rôles
+- Processus d'ajout, mise à jour, désactivation et suppression.
+- Administration et modification des rôles et permissions.
+
+---
+
+## Gestion des politiques
+
+### Politiques de mot de passe
+- Longueur, complexité et expiration.
+
+### Politiques d’accès
+- Définition des règles selon les rôles et utilisateurs.
+
+---
+
+## Solution envisagée
+Une solution open-source comme **OpenIAM**, offrant :
+- Gestion des rôles et permissions.
+- Fonctionnalités d’authentification multifactorielle.
+
+---
