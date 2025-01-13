@@ -1,7 +1,6 @@
-// Import necessary libraries
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PublicClientApplication } from "@azure/msal-browser";
-import "./ChangePassword.css"; // Import CSS for styling the red theme
+import "./ChangePassword.css"; // Custom CSS for styling the red theme
 
 // MSAL Configuration
 const msalConfig = {
@@ -14,25 +13,29 @@ const msalConfig = {
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
-// Function to log in and get a token
-const loginAndGetToken = async () => {
-  try {
-    const loginResponse = await msalInstance.loginPopup({
-      scopes: ["User.ReadWrite"], // Request delegated permissions
-    });
-    return loginResponse.accessToken;
-  } catch (error) {
-    console.error("Error logging in:", error);
-    throw error;
-  }
-};
-
 // ChangePassword Component
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+
+  // Ensure MSAL instance is initialized
+  useEffect(() => {
+    msalInstance.initialize(); // Initializes the instance
+  }, []);
+
+  const loginAndGetToken = async () => {
+    try {
+      const loginResponse = await msalInstance.loginPopup({
+        scopes: ["User.ReadWrite"], // Request delegated permissions
+      });
+      return loginResponse.accessToken;
+    } catch (error) {
+      console.error("Error logging in:", error);
+      throw error;
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
