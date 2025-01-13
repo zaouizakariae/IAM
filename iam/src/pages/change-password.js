@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ChangePassword.css"; // Import CSS for styling
-import { loginAndGetToken } from "./msalConfig"; // Import MSAL configuration
+import { loginAndGetToken } from "./msalConfig.js"; // Import MSAL configuration
 
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
