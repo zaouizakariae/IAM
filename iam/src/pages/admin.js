@@ -20,7 +20,7 @@
         const userData = await userResponse.json();
 
         const roleClaim = userData.clientPrincipal.claims.find(
-          (claim) => claim.typ === 'roles'
+          (claim) => claim.typ === 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
         );
         const role = roleClaim ? roleClaim.val : null;
         console.log('Role:', role);
